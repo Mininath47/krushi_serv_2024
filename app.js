@@ -20,5 +20,15 @@ app.get('/state', (req, res) => {
     });
 });
 
+app.get('/khat', (req, res) => {
+    mongodb.connect(mongoPath).then((object) => {
+        const database = object.db('StateDrop');
+        database.collection('Khat').find({}).toArray().then((document) => {
+            res.send(document);
+            res.end();
+        })
+    })
+})
+
 app.listen(Port);
-console.log(`server is running... http://127.0.0.1:${Port}`);
+console.log(`server is running... http://127.0.0.1:${Port}`);     
