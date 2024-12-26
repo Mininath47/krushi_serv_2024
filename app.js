@@ -5,6 +5,8 @@ const cors = require('cors');
 
 const app = express();
 app.use(cors());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 const url = process.env.MongoPath; // Replace with your MongoDB connection string
 const dbName = 'StateDrop'; // Replace with your database name
@@ -100,6 +102,43 @@ app.get('/state/:stateName/:districtName/:subdistrictName', (req, res) => {
             res.status(500).send("Internal Server Error");
         });
 });
+
+
+// Register Form In user Start Code
+
+app.get('/userRegister', (req, res) => {
+    MongoClient.connect(url).then((object) => {
+        const database = object.db('StateDrop');
+        database.collection('users').find({}).toArray().then((document) => {
+            res.send(document);
+            res.end();
+        })
+   })
+})
+
+app.post('/userRegister', (req, res) => {
+    const user = {
+        fname: req.body.fname,
+        mobile: req.body.mobile,
+        email:req.body.email,
+        age: req.body.age,
+        gender: req.body.gender,
+        statedata: req.body.statedata,
+        districtdata: req.body.districtdata,
+        sub_districtdata: req.body.sub_districtdata,
+        villagesdata: req.body.villagesdata,
+        password: req.body.password
+    }
+    MongoClient.connect(url).then((object) => {
+        const database = object.db('StateDrop');
+        database.collection('users').insertOne(user).then(() => {
+            res.send('insert One Reacords...');
+            res.end();
+        })
+   })
+})
+
+// Register Form In user End Code  
 
 // Start the server
 const PORT = process.env.PORT || 3000;
