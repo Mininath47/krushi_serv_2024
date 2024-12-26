@@ -1,11 +1,12 @@
 const express = require('express');
 const { MongoClient } = require('mongodb');
 const cors = require('cors');
+ require('dotenv').config()
 
 const app = express();
 app.use(cors());
 
-const url = 'mongodb://127.0.0.1:27017'; // Replace with your MongoDB connection string
+const url = process.env.MongoPath; // Replace with your MongoDB connection string
 const dbName = 'StateDrop'; // Replace with your database name
 let db;
 
@@ -93,7 +94,7 @@ app.get('/state/:stateName/:districtName/:subdistrictName', (req, res) => {
 });
 
 // Start the server
-const PORT = 4000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on http://127.0.0.1:${PORT}`);
 });
