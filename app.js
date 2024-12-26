@@ -27,6 +27,14 @@ app.get('/state', (req, res) => {
             res.status(500).send("Internal Server Error");
         });
 });
+app.get('/khat', (req, res) => {
+    db.collection('Khat').find({}).toArray()
+        .then(documents => res.send(documents))
+        .catch(err => {
+            console.error("Error fetching states:", err);
+            res.status(500).send("Internal Server Error");
+        });
+});
 
 // Route to fetch districts by state
 app.get('/state/:stateName', (req, res) => {
